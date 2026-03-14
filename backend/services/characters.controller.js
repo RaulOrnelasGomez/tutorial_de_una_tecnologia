@@ -20,7 +20,7 @@
 const fetch = require("node-fetch");
 const sharp = require("sharp");
 
-const SWAPI_BASE = "https://swapi.dev/api";
+const SWAPI_BASE = "https://akabab.github.io/starwars-api/api/all.json";
 const IMAGE_BASE = "https://starwars-visualguide.com/assets/img/characters";
 const PLACEHOLDER_COLOR = { r: 20, g: 20, b: 20 };
 
@@ -95,22 +95,22 @@ const resolveUrls = async (urls, field) => {
 // ------------------------------------------------------------
 const getAllCharacters = async (req, res) => {
   try {
-    const page = req.query.page || 1;
-    const swapiRes = await fetch(`${SWAPI_BASE}/people/?page=${page}`);
-    if (!swapiRes.ok) throw new Error("Error al contactar SWAPI");
 
-    const swapiData = await swapiRes.json();
+    const response = await fetch(SWAPI_BASE);
+    const data = await response.json();
 
     const characters = await Promise.all(
-      swapiData.results.map(async (person) => {
-        const id = extractId(person.url);
-        const image = (await fetchAndProcessImage(id)) || (await generatePlaceholder());
+      data.map(async (person) => {
+
+        const image =
+          (await fetchAndProcessImage(person.id)) ||
+          (await generatePlaceholder());
 
         return {
-          id,
+          id: person.id,
           name: person.name,
           gender: person.gender,
-          birth_year: person.birth_year,
+          birth_year: person.birthYear,
           height: person.height,
           mass: person.mass,
           image,
@@ -118,12 +118,8 @@ const getAllCharacters = async (req, res) => {
       })
     );
 
-    res.json({
-      page: Number(page),
-      total: swapiData.count,
-      next: swapiData.next ? Number(page) + 1 : null,
-      results: characters,
-    });
+    res.json(characters);
+
   } catch (error) {
     console.error("[getAllCharacters]", error.message);
     res.status(500).json({ error: "No se pudo obtener la lista de personajes" });
@@ -136,42 +132,35 @@ const getAllCharacters = async (req, res) => {
 // ------------------------------------------------------------
 const getCharacterById = async (req, res) => {
   try {
+
     const { id } = req.params;
 
-    const swapiRes = await fetch(`${SWAPI_BASE}/people/${id}/`);
-    if (!swapiRes.ok) {
+    const response = await fetch(SWAPI_BASE);
+    const data = await response.json();
+
+    const person = data.find(p => p.id == id);
+
+    if (!person) {
       return res.status(404).json({ error: "Personaje no encontrado" });
     }
 
-    const person = await swapiRes.json();
-
-    // Resolver datos anidados en paralelo
-    const [homeworldRes, films, vehicles, starships, image] = await Promise.all([
-      fetch(person.homeworld).then((r) => r.json()).catch(() => null),
-      resolveUrls(person.films, "title"),
-      resolveUrls(person.vehicles, "name"),
-      resolveUrls(person.starships, "name"),
-      fetchAndProcessImage(id),
-    ]);
-
-    const finalImage = image || (await generatePlaceholder());
+    const image =
+      (await fetchAndProcessImage(person.id)) ||
+      (await generatePlaceholder());
 
     res.json({
-      id,
+      id: person.id,
       name: person.name,
       gender: person.gender,
-      birth_year: person.birth_year,
+      birth_year: person.birthYear,
       height: person.height,
       mass: person.mass,
-      hair_color: person.hair_color,
-      skin_color: person.skin_color,
-      eye_color: person.eye_color,
-      homeworld: homeworldRes ? homeworldRes.name : "Desconocido",
-      films,
-      vehicles,
-      starships,
-      image: finalImage,
+      hair_color: person.hairColor,
+      skin_color: person.skinColor,
+      eye_color: person.eyeColor,
+      image
     });
+
   } catch (error) {
     console.error("[getCharacterById]", error.message);
     res.status(500).json({ error: "Error al procesar el personaje" });
