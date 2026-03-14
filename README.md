@@ -94,67 +94,52 @@ git clone <URL_DEL_REPOSITORIO>
 cd starwars-search
 ```
 
-### 2. Instalar dependencias del backend
+### 2. Instalar todas las dependencias
+
+Desde la raiz del proyecto instala las dependencias de la raiz, del backend y del frontend:
 
 ```bash
-cd backend
 npm install
-```
-
-### 3. Instalar dependencias del frontend
-
-```bash
-cd ../frontend
-npm install
+cd backend && npm install && cd ..
+cd frontend && npm install && cd ..
 ```
 
 ---
 
-## Como ejecutar el backend
+## Como ejecutar el proyecto
 
-Desde la carpeta `backend/`, ejecuta:
-
-```bash
-cd backend
-node server.js
-```
-
-El servidor estara disponible en: `http://localhost:3001`
-
-Para ejecutarlo con recarga automatica al guardar cambios, puedes usar `nodemon`:
+Desde la **raiz del proyecto**, un solo comando levanta el backend y el frontend en paralelo:
 
 ```bash
-npm install -g nodemon
-nodemon server.js
-```
-
----
-
-## Como ejecutar el frontend
-
-Desde la carpeta `frontend/`, ejecuta:
-
-```bash
-cd frontend
 npm start
 ```
 
-La aplicacion estara disponible en el navegador en: `http://localhost:3000`
+| Servicio | URL                   |
+| -------- | --------------------- |
+| Frontend | http://localhost:3000 |
+| Backend  | http://localhost:3001 |
 
-> Nota: el backend debe estar en ejecucion antes de iniciar el frontend para que las busquedas funcionen correctamente.
+Los logs de ambos servicios aparecen en la misma terminal, etiquetados con `[backend]` y `[frontend]`.
+
+Para detener ambos servicios a la vez presiona `Ctrl+C`.
+
+> Si prefieres levantarlos por separado, puedes hacerlo con `npm start` dentro de cada carpeta (`backend/` y `frontend/`) en terminales distintas.
 
 ---
 
-## Endpoint del backend
+## Endpoints del backend
 
-| Metodo | Ruta                       | Descripcion                                   |
-| ------ | -------------------------- | --------------------------------------------- |
-| GET    | `/api/characters?name=...` | Busca personajes por nombre (parcial o total) |
+| Metodo | Ruta              | Descripcion                         |
+| ------ | ----------------- | ----------------------------------- |
+| GET    | `/characters`     | Devuelve todos los personajes       |
+| GET    | `/characters/:id` | Devuelve el detalle de un personaje |
+
+El filtrado por nombre se realiza en el **frontend** una vez recibida la lista completa.
 
 **Ejemplo de peticion:**
 
 ```
-GET http://localhost:3001/api/characters?name=luke
+GET http://localhost:3001/characters
 ```
 
 **Ejemplo de respuesta:**
@@ -164,9 +149,11 @@ GET http://localhost:3001/api/characters?name=luke
   {
     "id": 1,
     "name": "Luke Skywalker",
-    "image": "https://akabab.github.io/starwars-api/api/pics/1.jpg",
-    "species": "Human",
-    "homeworld": "Tatooine"
+    "gender": "male",
+    "birth_year": "19BBY",
+    "height": 172,
+    "mass": 77,
+    "image": "https://akabab.github.io/starwars-api/api/pics/1.jpg"
   }
 ]
 ```
@@ -229,6 +216,7 @@ Si no se encuentran resultados para el termino buscado, la aplicacion mostrara u
 
 ## Notas adicionales
 
-- La aplicacion no requiere base de datos. Todos los datos provienen de la API publica de Star Wars.
-- El proyecto esta pensado para correr completamente en entorno local.
-- No es necesario configurar variables de entorno para ejecutarlo en modo desarrollo.
+- La aplicacion no requiere base de datos. Todos los datos provienen de la API publica [akabab.github.io/starwars-api](https://akabab.github.io/starwars-api/).
+- El proyecto corre completamente en entorno local sin necesidad de variables de entorno.
+- El backend usa `node-fetch@2` (CommonJS). No actualizar a v3 ya que es ESM-only e incompatible con `require()`.
+- El filtrado de personajes por nombre se realiza en el frontend sobre la respuesta completa del backend.
