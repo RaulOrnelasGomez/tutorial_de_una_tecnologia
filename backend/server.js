@@ -4,15 +4,18 @@
 const express = require("express");
 const cors = require("cors");
 
-const { getAllCharacters, getCharacterById } = require("./characters.controller");
+const {
+  getAllCharacters,
+  getCharacterById,
+} = require("./services/characters.controller");
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 app.use(cors());
 
-app.get("/api/characters", getAllCharacters);
-app.get("/api/characters/:id", getCharacterById);
+app.get("/characters", getAllCharacters);
+app.get("/characters/:id", getCharacterById);
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
