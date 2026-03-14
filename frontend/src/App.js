@@ -4,11 +4,17 @@ import { useCharacters } from "./state";
 
 function App() {
   const [query, setQuery] = useState("");
+  const [error, setError] = useState(null);
   const { characters, setCharacters } = useCharacters();
 
   async function search() {
-    const results = await getCharacters(query);
-    setCharacters(results);
+    try {
+      setError(null);
+      const results = await getCharacters(query);
+      setCharacters(results);
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
@@ -23,6 +29,8 @@ function App() {
       />
 
       <button onClick={search}>Search</button>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div
         style={{

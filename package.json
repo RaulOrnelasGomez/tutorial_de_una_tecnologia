@@ -1,0 +1,11 @@
+{
+  "name": "starwars-search",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --names \"backend,frontend\" --prefix-colors \"yellow,cyan\" \"npm start --prefix backend\" \"npm start --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
