@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Luke Skywalker",
+    "gender": "male",
+    "height": "1.72",
+    "mass": "73",
+    "image": "/images/luke.jpg"
+  },
+  {
+    "name": "C-3PO",
+    "gender": "male",
+    "height": "1.71",
+    "mass": "75",
+    "image": "/images/c3po.jpg"
+  },
+  {
+    "name": "R2-D2",
+    "gender": "robot",
+    "height": "1.09",
+    "mass": "32",
+    "image": "/images/r2d2.jpg"
+  },
+  {
+    "name": "Darth Vader",
+    "gender": "male",
+    "height": "2.03",
+    "mass": "120",
+    "image": "/images/vader.jpg"
+  },
+  {
+    "name": "Leia Organa",
+    "gender": "female",
+    "height": "1.5",
+    "mass": "51",
+    "image": "/images/leia.jpg"
+  },
+  {
+    "name": "Owen Lars",
+    "gender": "male",
+    "height": "1.7",
+    "mass": "120",
+    "image": "/images/owen.jpg"
+  },
+  {
+    "name": "Beru Whitesun Lars",
+    "gender": "female",
+    "height": "1.65",
+    "mass": "75",
+    "image": "/images/beru.jpg"
+  },
+  {
+    "name": "Obi-Wan Kenobi",
+    "gender": "male",
+    "height": "1.82",
+    "mass": "77",
+    "image": "/images/obi.jpg"
+  },
+  {
+    "name": "Anakin Skywalker",
+    "gender": "male",
+    "height": "2.03",
+    "mass": "84",
+    "image": "/images/anakin.jpg"
+  },
+  {
+    "name": "Biggs Darklighter",
+    "gender": "male",
+    "height": "1.83",
+    "mass": "84",
+    "image": "/images/biggs.jpg"
+  },
+  {
+    "name": "Wilhuff Tarkin",
+    "gender": "male",
+    "height": "1.82",
+    "mass": "85",
+    "image": "/images/wilhuff.jpg"
+  },
+  {
+    "name": "R5-D4",
+    "gender": "robot",
+    "height": "0.97",
+    "mass": "32",
+    "image": "/images/r5d4.jpg"
+  }
+]
